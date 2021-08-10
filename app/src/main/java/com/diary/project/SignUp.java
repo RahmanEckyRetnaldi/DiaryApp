@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.diary.project.databinding.ActivitySigupBinding;
 import com.diary.project.models.UserDiary;
@@ -42,6 +43,8 @@ public class SignUp extends AppCompatActivity {
         dialog = new ProgressDialog(SignUp.this);
         reference = FirebaseDatabase.getInstance().getReference("UserDiary");
 
+        preferences = getSharedPreferences("Diaryku", MODE_PRIVATE);
+        editor = preferences.edit();
         //button signup click
         binding.signup.setOnClickListener(v->{
             String name = binding.name.getText().toString();
@@ -73,13 +76,16 @@ public class SignUp extends AppCompatActivity {
                         public void onComplete(@NonNull  Task<Void> task) {
                             dialog.dismiss();
                             if(task.isSuccessful()){
+                                editor.putString("unique", unique);
+                                editor.commit();
+                                Toast.makeText(SignUp.this, "Register Success", Toast.LENGTH_SHORT).show();
                                 Log.d("Succes: ", task+" Success");
                                 finish();
                             }
                         }
                     });
                 }else{
-                    Log.d("Failed: " ,"Failed sending");
+                    Toast.makeText(SignUp.this, "Register Failed", Toast.LENGTH_SHORT).show();
 
                 }
 
