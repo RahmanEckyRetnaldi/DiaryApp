@@ -9,6 +9,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.diary.project.dashboard.Dasboard;
 import com.diary.project.databinding.ActivitySplashBinding;
 
 public class Splash extends AppCompatActivity {
