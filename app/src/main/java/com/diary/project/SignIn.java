@@ -59,7 +59,7 @@ public class SignIn extends AppCompatActivity {
 
                 if(task.isSuccessful()){
                     dialog.dismiss();
-                    editor.putBoolean("Auto Login", true);
+                    editor.putBoolean("AutoLogin", true);
                     editor.apply();
                     startActivity(new Intent(SignIn.this, Dasboard.class));
                     Toast.makeText(SignIn.this, "Login Success!",Toast.LENGTH_SHORT).show();
