@@ -49,7 +49,7 @@ public class SignUp extends AppCompatActivity {
         binding.signup.setOnClickListener(v->{
             String name = binding.name.getText().toString();
             String email = binding.email.getText().toString();
-            String pass = binding.email.getText().toString();
+            String pass = binding.password.getText().toString();
             storeDataToFirebase(name, email, pass);
         });
 

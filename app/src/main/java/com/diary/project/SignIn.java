@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,7 +38,10 @@ public class SignIn extends AppCompatActivity {
         editor = preferences.edit();
 
         binding.signin.setOnClickListener(v->{
-            storeLoginUser("", "");
+            String email = binding.email.getText().toString();
+            String pass = binding.password.getText().toString();
+
+            storeLoginUser(email, pass);
         });
 
         binding.signup.setOnClickListener(v->{
@@ -52,8 +56,20 @@ public class SignIn extends AppCompatActivity {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                dialog.dismiss();
-                finish();
+
+                if(task.isSuccessful()){
+                    dialog.dismiss();
+                    editor.putBoolean("Auto Login", true);
+                    editor.apply();
+                    startActivity(new Intent(SignIn.this, Dasboard.class));
+                    Toast.makeText(SignIn.this, "Login Success!",Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                else{
+                    dialog.dismiss();
+                    Toast.makeText(SignIn.this, "Login Failed!",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
