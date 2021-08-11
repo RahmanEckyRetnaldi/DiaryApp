@@ -7,14 +7,18 @@ import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.diary.project.databinding.ActivityDasboardBinding;
 import com.diary.project.models.ModelDiary;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -49,5 +53,33 @@ public class Dasboard extends AppCompatActivity {
 
 
         binding.rvDashboard.setLayoutManager(linearLayoutManager);
+
+        showDiary();
     }
+     private void showDiary(){
+        dialog.setMessage("Please wait . . .");
+        dialog.show();
+        diaries.clear();
+
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    modalDiary = ds.getValue(ModelDiary.class);
+                    diaries.add(modalDiary);
+
+                    adapterDiary = new AdapterDiary(Dasboard.this, diaries);
+                    binding.rvDashboard.setAdapter(adapterDiary);
+                    binding.noitem.setVisibility(View.GONE);
+                    dialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                binding.noitem.setVisibility(View.VISIBLE);
+            }
+        });
+     }
 }
