@@ -1,6 +1,7 @@
 package com.diary.project.dashboard;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -53,8 +54,11 @@ public class Dasboard extends AppCompatActivity {
 
 
         binding.rvDashboard.setLayoutManager(linearLayoutManager);
+        binding.add.setOnClickListener(v -> {
+            startActivity(new Intent(Dasboard.this, AddDiary.class));
+        });
 
-        showDiary();
+       // showDiary();
     }
      private void showDiary(){
         dialog.setMessage("Please wait . . .");
