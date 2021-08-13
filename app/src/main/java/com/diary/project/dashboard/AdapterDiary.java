@@ -13,7 +13,7 @@ import com.diary.project.models.ModelDiary;
 
 import java.util.ArrayList;
 
-public class AdapterDiary extends RecyclerView.Adapter<AdapterDiary.AdapterHolder> {
+public class    AdapterDiary extends RecyclerView.Adapter<AdapterDiary.AdapterHolder> {
 
     Context context;
     ArrayList<ModelDiary> arrayList;

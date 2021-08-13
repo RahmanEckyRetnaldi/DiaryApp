@@ -1,2 +1,5 @@
-package com.diary.project.dashboard;public class AddDiary {
+package com.diary.project.dashboard;
+
+
+public class AddDiary {
 }
