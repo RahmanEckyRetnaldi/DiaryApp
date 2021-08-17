@@ -26,6 +26,8 @@ public class  AdapterDiary extends RecyclerView.Adapter<AdapterDiary.AdapterHold
     AdapterDiaryBinding binding;
     String keyId = "";
     String date;
+    String title;
+    String des;
     UpdateDiary diary;
 
     public AdapterDiary(Context context, ArrayList<ModelDiary> arrayList) {
@@ -53,6 +55,9 @@ public class  AdapterDiary extends RecyclerView.Adapter<AdapterDiary.AdapterHold
         holder.binding.tvDate.setText(date);
 
         holder.binding.ivClose.setOnClickListener(v ->{
+            ModelDiary modelDiary1 = arrayList.get(position);
+
+            deleteDiaryku(modelDiary);
 
         });
 
@@ -108,13 +113,20 @@ public class  AdapterDiary extends RecyclerView.Adapter<AdapterDiary.AdapterHold
                 public void run() {
 
                     Log.d("Edit: ", "Success");
+                    dialog.dismiss();
 
                 }
             });
         });
     }
 
-    private  void deleteDiaryku(){
+    private  void deleteDiaryku(ModelDiary md){
+        keyId = md.getUserId();
+        title = md.getTitle();
+        des = md.getDescription();
+        date = md.getDate();
 
+        ModelDiary mdelete = new ModelDiary(title,des,date, keyId);
+        diary.deleteDiary(mdelete);
     }
 }

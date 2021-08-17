@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +17,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.diary.project.databinding.ActivityDasboardBinding;
 import com.diary.project.models.ModelDiary;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class Dasboard extends AppCompatActivity {
+public class Dasboard extends AppCompatActivity implements UpdateDiary{
 
     ActivityDasboardBinding binding;
 
@@ -93,4 +96,41 @@ public class Dasboard extends AppCompatActivity {
             }
         });
      }
+
+    @Override
+    public void editDiary(ModelDiary diary) {
+        reference.child(modalDiary.getUserId()).setValue(diary).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(Dasboard.this, "Success Update Diary", Toast.LENGTH_SHORT).show();
+                    showDiary();
+                }else {
+                    Toast.makeText(Dasboard.this, "Filed Update Diary", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
+    }
+
+    @Override
+    public void deleteDiary(ModelDiary diary) {
+        reference.child(diary.getUserId()).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(Dasboard.this, "Success Delete Diary", Toast.LENGTH_SHORT).show();
+                     showDiary();
+                }else{
+                    Toast.makeText(Dasboard.this, "Failed delete Diary", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        showDiary();
+    }
 }
