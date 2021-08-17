@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.diary.project.databinding.ActivityDasboardBinding;
 import com.diary.project.models.ModelDiary;
@@ -47,7 +48,7 @@ public class Dasboard extends AppCompatActivity {
 
         preferences = getSharedPreferences("Diaryku", MODE_PRIVATE);
         unique = preferences.getString("unique","");
-        reference = FirebaseDatabase.getInstance().getReference("UserDiary").child(unique);
+        reference = FirebaseDatabase.getInstance().getReference("DataUser").child(unique);
         diaries = new ArrayList<>();
         linearLayoutManager = new LinearLayoutManager(this);
         dialog = new ProgressDialog(this);
@@ -57,8 +58,15 @@ public class Dasboard extends AppCompatActivity {
         binding.add.setOnClickListener(v -> {
             startActivity(new Intent(Dasboard.this, AddDiary.class));
         });
+        binding.swDasboard.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                showDiary();
+                binding.swDasboard.setRefreshing(false);
+            }
+        });
+        showDiary();
 
-       // showDiary();
     }
      private void showDiary(){
         dialog.setMessage("Please wait . . .");
@@ -72,12 +80,11 @@ public class Dasboard extends AppCompatActivity {
                 for(DataSnapshot ds : snapshot.getChildren()){
                     modalDiary = ds.getValue(ModelDiary.class);
                     diaries.add(modalDiary);
-
-                    adapterDiary = new AdapterDiary(Dasboard.this, diaries);
-                    binding.rvDashboard.setAdapter(adapterDiary);
-                    binding.noitem.setVisibility(View.GONE);
-                    dialog.dismiss();
                 }
+                adapterDiary = new AdapterDiary(Dasboard.this, diaries);
+                binding.rvDashboard.setAdapter(adapterDiary);
+                binding.noitem.setVisibility(View.GONE);
+                dialog.dismiss();
             }
 
             @Override

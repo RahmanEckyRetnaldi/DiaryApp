@@ -1,6 +1,6 @@
 package com.diary.project.models;
 
-public class ModelDiary {
+public class    ModelDiary {
 
     private String title;
     private String description;

@@ -46,32 +46,33 @@ public class AddDiary extends AppCompatActivity {
         reference = FirebaseDatabase.getInstance().getReference("DataUser").child(uniqueId);
         dialog = new ProgressDialog(this);
 
-        binding.sumbit.setOnClickListener(v ->{
+        binding.sumbit.setOnClickListener(v->{
             String title = binding.title.getText().toString();
             String description = binding.description.getText().toString();
 
-           SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy");
             Calendar calendar = Calendar.getInstance();
             String fixdate = sdf.format(calendar.getTime());
 
             dialog.setMessage("Please Wait ...");
             dialog.show();
-
             keyUnique = reference.push().getKey();
             ModelDiary modelDiary = new ModelDiary(title, description, fixdate, keyUnique);
+
             reference.child(keyUnique).setValue(modelDiary).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    if(task.isSuccessful()){
-                        Toast.makeText(AddDiary.this, "Success Sumbit", Toast.LENGTH_SHORT).show();
+                    if (task.isSuccessful()){
+                        Toast.makeText(AddDiary.this, "Success sumbit", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                         finish();
                     }else{
                         Toast.makeText(AddDiary.this, "Failed Sumbit", Toast.LENGTH_SHORT).show();
-
                     }
                 }
             });
         });
+
+
     }
 }
