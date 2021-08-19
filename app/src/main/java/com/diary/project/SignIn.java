@@ -49,6 +49,10 @@ public class SignIn extends AppCompatActivity {
             startActivity(new Intent(SignIn.this, SignUp.class));
         });
 
+        binding.tvForget.setOnClickListener(v ->{
+            startActivity(new Intent(SignIn.this, ResetPass.class));
+        });
+
     }
 
     private void storeLoginUser(String email, String password){
